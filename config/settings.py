@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accountApp',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -113,3 +114,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 未ログイン時の遷移先
 LOGIN_URL = 'signin'
+
+AUTH_USER_MODEL = 'users.CustomUser'
