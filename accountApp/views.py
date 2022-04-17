@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 
+@method_decorator(login_required, name='dispatch')
 class UserHomeView(View):
     def get(self, request):
         return render(request, 'user-home.html')
