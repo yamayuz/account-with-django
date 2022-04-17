@@ -25,8 +25,11 @@ class SigninView(View):
             return render(request, 'signin.html', {'error': '登録されていないユーザーです。\nユーザーを新規作成してください。'})
         else:
             login(request, user)
-            return redirect('user-home')
-            
+            if request.user.is_superuser or request.user.is_staff:
+                return render(request, 'dashboard.html')
+            else:
+                return redirect('user-home')
+
 
 class SignupView(View):
     def get(self, request):
