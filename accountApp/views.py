@@ -40,3 +40,9 @@ class SignupView(View):
         except User.DoesNotExist:
             user = User.objects.create_user(target_username, '', target_password)
             return redirect('signin')
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return render(request, 'logout.html')
