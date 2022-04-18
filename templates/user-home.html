@@ -6,8 +6,14 @@
 {% endblock style %}
 
 {% block content %}
-    test
     <a href="{% url 'logout' %}" class="">ログアウト</a>
+
+    {% if user.profile_image == '' %}
+        <img src="{% static '/accountApp/images/default-user.png' %}" class="user-icon">
+    {% else %}
+        <img src="{{ user.profile_image.url }}" class="user-icon">
+    {% endif %}
+
     <h3>{{ user.username }}</h3>
-    <img src="{{ user.profile_image.url }}" class="user-icon">
+    
 {% endblock content %}
