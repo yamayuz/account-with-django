@@ -24,6 +24,8 @@ body {
 }
 .error_message {
     color: red;
+    margin: 0 0 3px 15px!important;
+    text-align: left;
 }
 .logout-message {
     width: 300px;

@@ -5,6 +5,8 @@ from users.models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from .forms import *
+from django.template.response import TemplateResponse
 
 
 @method_decorator(login_required, name='dispatch')
@@ -36,13 +38,20 @@ class SignupView(View):
         return render(request, 'signup.html')
 
     def post(self, request):
-        target_username = request.POST['username']
-        target_password = request.POST['password']
+        form = SignupForm(request.POST)
+        is_valid = form.is_valid()
+
+        if not is_valid:
+            return TemplateResponse(request, 'signup.html', {'form': form})
+        
+        username = form.cleaned_data['username']
+        tpassword = form.cleaned_data['password']
+
         try:
-            CustomUser.objects.get(username=target_username)
+            CustomUser.objects.get(username=username)
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています。'})
         except CustomUser.DoesNotExist:
-            user = CustomUser.objects.create_user(target_username, '', target_password)
+            user = CustomUser.objects.create_user(username, '', tpassword)
             return redirect('signin')
 
 
