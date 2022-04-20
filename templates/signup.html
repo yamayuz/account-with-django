@@ -13,6 +13,9 @@
 
         <h5>Sign up</h5>
         <div class="mb-3">
+            {% for non_field_error in form.non_field_errors %}
+                <p class="error_message">{{ non_field_error|linebreaksbr }}</p>
+            {% endfor %}
             {% for error in form.username.errors %}
                 <p class="error_message">{{ error }}</p>
             {% endfor %}
