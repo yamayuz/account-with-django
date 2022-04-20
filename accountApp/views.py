@@ -46,13 +46,8 @@ class SignupView(View):
         
         username = form.cleaned_data['username']
         tpassword = form.cleaned_data['password']
-
-        try:
-            CustomUser.objects.get(username=username)
-            return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています。'})
-        except CustomUser.DoesNotExist:
-            user = CustomUser.objects.create_user(username, '', tpassword)
-            return redirect('signin')
+        user = CustomUser.objects.create_user(username, '', tpassword)
+        return redirect('signin')
 
 
 class LogoutView(View):

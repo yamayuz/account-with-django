@@ -16,9 +16,6 @@
             {% for error in form.username.errors %}
                 <p class="error_message">{{ error }}</p>
             {% endfor %}
-            {% if error %}
-                <p class="error_message">{{ error|linebreaksbr }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ユーザ名">
         </div>
         <div class="mb-3">
