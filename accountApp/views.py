@@ -20,17 +20,20 @@ class SigninView(View):
         return render(request, 'signin.html')
 
     def post(self, request):
-        target_username = request.POST['username']
-        target_password = request.POST['password']
-        user = authenticate(username=target_username, password=target_password)
-        if user is None:
-            return render(request, 'signin.html', {'error': '登録されていないユーザーです。\nユーザーを新規作成してください。'})
+        form = SigninForm(request.POST)
+        is_valid = form.is_valid()
+        if not is_valid:
+            return TemplateResponse(request, 'signin.html', {'form': form})
+
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        login(request, user)
+
+        if request.user.is_superuser or request.user.is_staff:
+            return render(request, 'dashboard.html')
         else:
-            login(request, user)
-            if request.user.is_superuser or request.user.is_staff:
-                return render(request, 'dashboard.html')
-            else:
-                return redirect('user-home')
+            return redirect('user-home')
 
 
 class SignupView(View):
@@ -40,13 +43,12 @@ class SignupView(View):
     def post(self, request):
         form = SignupForm(request.POST)
         is_valid = form.is_valid()
-
         if not is_valid:
             return TemplateResponse(request, 'signup.html', {'form': form})
         
         username = form.cleaned_data['username']
-        tpassword = form.cleaned_data['password']
-        user = CustomUser.objects.create_user(username, '', tpassword)
+        password = form.cleaned_data['password']
+        user = CustomUser.objects.create_user(username, '', password)
         return redirect('signin')
 
 
